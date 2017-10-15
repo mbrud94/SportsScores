@@ -1,0 +1,19 @@
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!testData"><em>Loading...</em></p>
+
+<table class='table' *ngIf="testData">
+    <thead>
+        <tr>
+            <th>Test string</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let test of testData">
+            <td>{{ test }}</td>
+
+        </tr>
+    </tbody>
+</table>
