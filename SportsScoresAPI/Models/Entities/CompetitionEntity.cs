@@ -14,7 +14,7 @@ namespace SportsScoresAPI.Models.Entities
         public string Season { get; set; }
 
         public int? NationalityId { get; set; }
-        public Nationality Nationality { get; set; }
+        public NationalityEntity Nationality { get; set; }
 
         public List<TeamToCompetitionAssignmentEntity> TeamAssignments { get; set; }
         public List<GameEntity> Games { get; set; }
