@@ -16,5 +16,11 @@ namespace SportsScoresAPI.Controllers
         {
             return Enumerable.Range(1, 5).Select(index => $"Test string {index}");
         }
+
+        [HttpGet("[action]")]
+        public IEnumerable<string> CDTest()
+        {
+            return Enumerable.Range(1, 5).Select(index => $"Test continuous delivery {index}");
+        }
     }
 }
