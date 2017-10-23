@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportsScoresAPI.Data;
 using SportsScoresAPI.Models;
 using SportsScoresAPI.Services;
+using SportsScoresAPI.ExternalDataProviders;
 
 namespace SportsScoresAPI
 {
@@ -37,6 +38,8 @@ namespace SportsScoresAPI
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddCors();
             services.AddMvc();
+
+            services.AddTransient<DataSaver>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

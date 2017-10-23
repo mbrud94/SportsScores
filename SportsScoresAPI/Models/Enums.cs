@@ -19,6 +19,7 @@ namespace SportsScoresAPI.Models
     {
         Finished,
         Scheduled,
-        InProgress
+        InPlay,
+        Timed
     }
 }
