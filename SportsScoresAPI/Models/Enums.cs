@@ -22,4 +22,11 @@ namespace SportsScoresAPI.Models
         InPlay,
         Timed
     }
+
+    public enum CompetitionTableType
+    {
+        General,
+        Home,
+        Away
+    }
 }

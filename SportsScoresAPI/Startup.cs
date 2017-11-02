@@ -44,6 +44,7 @@ namespace SportsScoresAPI
             services.AddTransient<CompetitionsService>();
             services.AddTransient<PlayersService>();
             services.AddTransient<GamesService>();
+            services.AddTransient<CompetitionTablesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
