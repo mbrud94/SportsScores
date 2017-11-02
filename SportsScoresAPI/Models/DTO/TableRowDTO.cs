@@ -7,6 +7,20 @@ namespace SportsScoresAPI.Models.DTO
 {
     public class TableRowDTO
     {
+        public TableRowDTO(){}
+
+        public TableRowDTO(string teamName, int points, int wins, int draws, int losts, int played, int pos, int goalsScored, int goalsLost)
+        {
+            TeamName = teamName;
+            Points = points;
+            Wins = wins;
+            Draws = draws;
+            Losts = losts;
+            PlayedGames = played;
+            Position = pos;
+            GoalsScored = goalsScored;
+            GoalsLost = goalsLost;
+        }
         public string TeamName { get; set; }
         public int Position { get; set; }
         public int Points { get; set; }

@@ -7,6 +7,16 @@ namespace SportsScoresAPI.Models.DTO
 {
     public class GameDTO
     {
+        public GameDTO(){}
+
+        public GameDTO(string homeTeam, string awayTeam, int homeTeamGoals, int awayTeamGoals)
+        {
+            HomeTeam = homeTeam;
+            AwayTeam = awayTeam;
+            HomeTeamGoals = homeTeamGoals;
+            AwayTeamGoals = awayTeamGoals;
+        }
+
         public int GameId { get; set; }
 
         public int MatchDay { get; set; }
