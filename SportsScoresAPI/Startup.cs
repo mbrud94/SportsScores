@@ -13,6 +13,7 @@ using SportsScoresAPI.Models;
 using SportsScoresAPI.Services;
 using SportsScoresAPI.ExternalDataProviders;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using SportsScoresAPI.Facades;
 
 namespace SportsScoresAPI
 {
@@ -54,7 +55,7 @@ namespace SportsScoresAPI
             services.AddTransient<PlayersService>();
             services.AddTransient<GamesService>();
             services.AddTransient<CompetitionTablesService>();
-            services.AddTransient<AdminService>();
+            services.AddTransient<AdminFacade>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

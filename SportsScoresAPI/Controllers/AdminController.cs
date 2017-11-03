@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using RestSharp;
-using SportsScoresAPI.Services;
-using SportsScoresAPI.ExternalDataProviders;
-using Microsoft.AspNetCore.Hosting;
+using SportsScoresAPI.Facades;
 
 namespace SportsScoresAPI.Controllers
 {
@@ -16,9 +13,9 @@ namespace SportsScoresAPI.Controllers
     [Route("api/Admin")]
     public class AdminController : Controller
     {
-        private AdminService service;
+        private AdminFacade service;
 
-        public AdminController(AdminService service)
+        public AdminController(AdminFacade service)
         {
             this.service = service;
 

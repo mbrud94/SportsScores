@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using SportsScoresAPI.ExternalDataProviders;
 using SportsScoresAPI.ExternalDataProviders.ExternalModel;
+using SportsScoresAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,9 +12,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportsScoresAPI.Services
+namespace SportsScoresAPI.Facades
 {
-    public class AdminService
+    public class AdminFacade
     {
         private const string PASSWORD = "f865b53623b121fd34ee5426c792e5c33af8c227";
 
@@ -22,7 +23,7 @@ namespace SportsScoresAPI.Services
         private IHostingEnvironment env;
         private CompetitionsService competitionsService;
 
-        public AdminService(DataReaderBuilder dataReaderBuilder, DataSaver saver, IHostingEnvironment env, CompetitionsService competitionsService)
+        public AdminFacade(DataReaderBuilder dataReaderBuilder, DataSaver saver, IHostingEnvironment env, CompetitionsService competitionsService)
         {
             this.externaldDataReaderBuilder = dataReaderBuilder;
             this.externalDataSaver = saver;
