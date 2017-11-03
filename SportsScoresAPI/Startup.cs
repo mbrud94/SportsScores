@@ -12,6 +12,7 @@ using SportsScoresAPI.Data;
 using SportsScoresAPI.Models;
 using SportsScoresAPI.Services;
 using SportsScoresAPI.ExternalDataProviders;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SportsScoresAPI
 {
@@ -30,6 +31,18 @@ namespace SportsScoresAPI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //jwt
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://sportsscores.eu.auth0.com/";
+                options.Audience = "https://sportsscores.api.com";
+            });
+
             // Add application services.
             services.AddCors();
             services.AddMvc();
@@ -40,6 +53,7 @@ namespace SportsScoresAPI
             services.AddTransient<PlayersService>();
             services.AddTransient<GamesService>();
             services.AddTransient<CompetitionTablesService>();
+            services.AddTransient<AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
