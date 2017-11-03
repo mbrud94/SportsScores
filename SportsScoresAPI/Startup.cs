@@ -48,6 +48,7 @@ namespace SportsScoresAPI
             services.AddMvc();
 
             services.AddTransient<DataSaver>();
+            services.AddTransient<DataReaderBuilder>();
             services.AddTransient<TeamsService>();
             services.AddTransient<CompetitionsService>();
             services.AddTransient<PlayersService>();

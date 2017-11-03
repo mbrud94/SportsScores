@@ -22,6 +22,11 @@ namespace SportsScoresAPI.Services
             return context.Competitions.Select(c => MapEntityToDTO(c)).ToList();
         }
 
+        public bool IsCompetitionExist(int id)
+        {
+            return context.Competitions.Any(c => c.CompetitionId == id);
+        }
+
         private CompetitionDTO MapEntityToDTO(CompetitionEntity entity)
         {
             return new CompetitionDTO

@@ -44,15 +44,6 @@ namespace SportsScoresAPI.ExternalDataProviders
 
 
     }
-
-    public static  class TopLeauges
-    {
-        public const int PremierLeague = 445;
-        public const int SerieA = 456;
-        public const int PrimeraDivision = 455;
-        public const int Bundesliga = 452;
-        public const int Ligue1 = 450;
-    }
 }
 
 

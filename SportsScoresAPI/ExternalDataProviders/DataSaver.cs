@@ -20,12 +20,8 @@ namespace SportsScoresAPI.ExternalDataProviders
             _context = context;
         }
 
-        public void Save(ExternalData data)
+        public void Create(ExternalData data)
         {
-            if(IsCompetitionExist(data.Competition))
-            {
-                return;
-            }
             using (var transaction = _context.Database.BeginTransaction())
             {
                 _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Competitions] ON");
@@ -44,6 +40,12 @@ namespace SportsScoresAPI.ExternalDataProviders
        
                 transaction.Commit();
             }
+        }
+
+        public int Update(ExternalData data)
+        {
+            int compId = ExtractIdFromLinks(data.Competition._links);
+            return UpdateCompetitionGames(data.Competition.Fixtures, compId);
         }
 
         private void SaveTeamPlayers(TeamExt team)
@@ -131,6 +133,38 @@ namespace SportsScoresAPI.ExternalDataProviders
             _context.SaveChanges();
         }
 
+        private int UpdateCompetitionGames(FixturesList games, int competitionId)
+        {
+            int updateCount = 0;
+            foreach (var game in games.Fixtures)
+            {
+                var gameStatus = (GameStatus)Enum.Parse(typeof(GameStatus), game.Status.Replace("_", string.Empty), true);
+                if (gameStatus == GameStatus.Finished)
+                {
+                    int homeTeamId = ExtractIdFromLinkItem(game._links.HomeTeam);
+                    int awayTeamId = ExtractIdFromLinkItem(game._links.AwayTeam);
+                    var gameEntity = _context.Games.FirstOrDefault(g => g.HomeTeamId == homeTeamId
+                        && g.AwayTeamId == awayTeamId && g.Status != GameStatus.Finished);
+                    if(gameEntity != null)
+                    {
+                        gameEntity.AwayTeamGoals = game.Result.GoalsAwayTeam;
+                        gameEntity.HomeTeamGoals = game.Result.GoalsHomeTeam;
+                        gameEntity.HalfAwayTeamGoals = game.Result.HalfTime?.GoalsAwayTeam;
+                        gameEntity.HalfHomeTeamGoals = game.Result.HalfTime?.GoalsHomeTeam;
+                        gameEntity.MatchDate = game.Date.Value;
+                        gameEntity.MatchDay = game.Matchday.Value;
+                        gameEntity.Status = gameStatus;
+
+                        _context.Entry(gameEntity).State = EntityState.Modified;
+                        updateCount++;
+                    }
+
+                }
+            }
+            _context.SaveChanges();
+            return updateCount;
+        }
+
         #region Assignments
         private PlayerToTeamAssignmentEntity CreatePlayerAssignment(TeamExt team, PlayerEntity playerEntity, PlayerExt playerExt)
         {
@@ -215,13 +249,6 @@ namespace SportsScoresAPI.ExternalDataProviders
             }
             return ent.PlayerPositionId;
         }
-
-        private bool IsCompetitionExist(CompetitionExt comp)
-        {
-            int compId = ExtractIdFromLinks(comp._links);
-            return _context.Competitions.Any(c => c.CompetitionId == compId);
-        }
-
         #endregion
     }
 }

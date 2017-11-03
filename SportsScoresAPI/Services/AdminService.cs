@@ -1,6 +1,11 @@
-﻿using RestSharp;
+﻿using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
+using RestSharp;
+using SportsScoresAPI.ExternalDataProviders;
+using SportsScoresAPI.ExternalDataProviders.ExternalModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,6 +16,19 @@ namespace SportsScoresAPI.Services
     public class AdminService
     {
         private const string PASSWORD = "f865b53623b121fd34ee5426c792e5c33af8c227";
+
+        private DataReaderBuilder externaldDataReaderBuilder;
+        private DataSaver externalDataSaver;
+        private IHostingEnvironment env;
+        private CompetitionsService competitionsService;
+
+        public AdminService(DataReaderBuilder dataReaderBuilder, DataSaver saver, IHostingEnvironment env, CompetitionsService competitionsService)
+        {
+            this.externaldDataReaderBuilder = dataReaderBuilder;
+            this.externalDataSaver = saver;
+            this.env = env;
+            this.competitionsService = competitionsService;
+        }
 
         public string GetToken()
         {
@@ -27,6 +45,46 @@ namespace SportsScoresAPI.Services
         public bool ValidatePasword(string password)
         {
             return HashPassword(password) == PASSWORD;
+        }
+
+        public int UpdateCompetitionGamesUsingExternalApi(int competitionId)
+        {
+            int updatedCount = -1;
+            if (competitionsService.IsCompetitionExist(competitionId))
+            {
+                var reader = externaldDataReaderBuilder.ReadCompetition(competitionId)
+                                .WithGames()
+                                .Build();
+
+                var data = reader.ReadData();
+                updatedCount = externalDataSaver.Update(data);
+            }
+            return updatedCount;
+        }
+
+        public void ReadFullCompetitionFromFile(int competitionId)
+        {
+            string fileName = ExternalDataTools.MapIdToFileName(competitionId);
+            string path = $@"{env.ContentRootPath}/AppData/{fileName}.json";
+            ExternalData data = new ExternalData();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                data = (ExternalData)serializer.Deserialize(sr, typeof(ExternalData));
+            }
+            externalDataSaver.Create(data);
+        }
+
+        public bool IsReadFromFilePossible(int competitionId)
+        {
+            bool res = false;
+            string fileName = ExternalDataTools.MapIdToFileName(competitionId);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string path = $@"{env.ContentRootPath}/AppData/{fileName}.json";
+                res = File.Exists(path) && !competitionsService.IsCompetitionExist(competitionId);
+            }
+            return res;
         }
 
         private string HashPassword(string password)

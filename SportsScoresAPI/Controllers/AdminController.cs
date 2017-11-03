@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using RestSharp;
 using SportsScoresAPI.Services;
+using SportsScoresAPI.ExternalDataProviders;
+using Microsoft.AspNetCore.Hosting;
 
 namespace SportsScoresAPI.Controllers
 {
@@ -19,19 +21,20 @@ namespace SportsScoresAPI.Controllers
         public AdminController(AdminService service)
         {
             this.service = service;
+
         }
 
         [Authorize]
         [HttpGet]
-        [Route("test")]
-        public string TestAuth() //TODO: remove
+        [Route("checkauth")]
+        public IActionResult CheckAuthentication()
         {
-            return "All good. You only get this message if you are authenticated.";
+            return Ok("You are authenticated");
         }
 
         [HttpGet]
-        [Route("auth/{password}")]
-        public IActionResult GetToken(string password) //TODO: post
+        [Route("gettoken/{password}")]
+        public IActionResult GetToken(string password)
         {
             if (service.ValidatePasword(password))
             {
@@ -40,5 +43,33 @@ namespace SportsScoresAPI.Controllers
             }
             return Forbid();
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("update/{id:int}")]
+        public IActionResult Update(int id)
+        {
+            int updated = service.UpdateCompetitionGamesUsingExternalApi(id);
+            if(updated == -1)
+            {
+                return NotFound($"Competition with id: {id} dosent exists");
+            }
+            return Ok($"Updated entites {updated}");
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("read/file/{id:int}")]
+        public IActionResult ReadFromFile(int id)
+        {
+            if (service.IsReadFromFilePossible(id))
+            {
+                service.ReadFullCompetitionFromFile(id);
+                return NoContent();
+            }
+            return BadRequest("Read from file impossible, file dosent exist or data already in database");
+        }
+
+        //TODO: read from api if needed - route read/api/{id}
     }
 }
