@@ -5,13 +5,21 @@ using System.Linq;
 using SportsScoresAPI.Models.DTO;
 using System.Collections.Generic;
 
-namespace SportsScoresAPITests
+namespace TableBuilderTests.SportsScoresAPITests
 {
-    public class GeneralTableBuilderTests
+    public abstract class TableBuilderTestsBase
     {
-        [Theory]
-        [MemberData(nameof(TableBuilderDataSource.GetDataForGeneralBuilder), MemberType = typeof(TableBuilderDataSource))]
-        public void TestTableStructure(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+
+        protected void TestBuildTableContent(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+        {
+            TestTableStructure(buildTable, expectedTable);
+            TestTeamsGames(buildTable, expectedTable);
+            TestTeamsGoals(buildTable, expectedTable);
+            TestTeamsPoints(buildTable, expectedTable);
+            TestTeamsPositionAndTableOrder(buildTable, expectedTable);
+        }
+
+        private void TestTableStructure(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
         {
             Assert.Equal(expectedTable.Count(), buildTable.Count());
             foreach (var expectedRow in expectedTable)
@@ -22,9 +30,7 @@ namespace SportsScoresAPITests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(TableBuilderDataSource.GetDataForGeneralBuilder), MemberType = typeof(TableBuilderDataSource))]
-        public void TestTeamsPoints(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+        private void TestTeamsPoints(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
         {
             foreach (var expectedRow in expectedTable)
             {
@@ -33,9 +39,7 @@ namespace SportsScoresAPITests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(TableBuilderDataSource.GetDataForGeneralBuilder), MemberType = typeof(TableBuilderDataSource))]
-        public void TestTeamGames(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+        private void TestTeamsGames(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
         {
             foreach (var expectedRow in expectedTable)
             {
@@ -48,9 +52,7 @@ namespace SportsScoresAPITests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(TableBuilderDataSource.GetDataForGeneralBuilder), MemberType = typeof(TableBuilderDataSource))]
-        public void TestTeamGoals(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+        private void TestTeamsGoals(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
         {
             foreach (var expectedRow in expectedTable)
             {
@@ -60,9 +62,7 @@ namespace SportsScoresAPITests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(TableBuilderDataSource.GetDataForGeneralBuilder), MemberType = typeof(TableBuilderDataSource))]
-        public void TestTeamPositionAndTableOrder(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
+        private void TestTeamsPositionAndTableOrder(IEnumerable<TableRowDTO> buildTable, IEnumerable<TableRowDTO> expectedTable)
         {
             int pos = 1;
             foreach(var row in buildTable)

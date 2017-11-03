@@ -46,10 +46,25 @@ namespace SportsScoresAPI.Services.CompetitionTable
         {
             this.tableRows = this.tableRows.OrderByDescending(r => r.Points)
                 .ThenByDescending(r => r.GoalsScored - r.GoalsLost)
-                .ThenByDescending(r => r.Wins).ToList();
+                .ThenByDescending(r => r.GoalsScored).ToList();
 
             int pos = 1;
             this.tableRows.ForEach(r => r.Position = pos++);
+        }
+
+        protected void AddMissingTeams(IEnumerable<GameDTO> games)
+        {
+            foreach(var game in games)
+            {
+                if(!tableRows.Any(r => r.TeamName == game.HomeTeam))
+                {
+                    tableRows.Add(new TableRowDTO { TeamName = game.HomeTeam });
+                }
+                if (!tableRows.Any(r => r.TeamName == game.AwayTeam))
+                {
+                    tableRows.Add(new TableRowDTO { TeamName = game.AwayTeam });
+                }
+            }
         }
 
         private GameResult GetGameResult(int firstTeamGoals, int secondTeamGoals)

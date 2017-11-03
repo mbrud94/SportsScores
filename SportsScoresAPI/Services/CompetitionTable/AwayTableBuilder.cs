@@ -15,6 +15,7 @@ namespace SportsScoresAPI.Services.CompetitionTable
             {
                 ParseAwayTeamResult(game);
             }
+            AddMissingTeams(games);
             AssingPositions();
             return this.tableRows;
         }
