@@ -27,9 +27,11 @@ namespace SportsScoresAPI.Models.DTO
 
         public int HomeTeamId { get; set; }
         public string HomeTeam { get; set; }
+        public string HomeTeamCrestUrl { get; set; }
 
         public int AwayTeamId { get; set; }
         public string AwayTeam { get; set; }
+        public string AwayTeamCrestUrl { get; set; }
 
         public int? HomeTeamGoals { get; set; }
         public int? AwayTeamGoals { get; set; }

@@ -77,11 +77,13 @@ namespace SportsScoresAPI.Services
             return new GameDTO
             {
                 AwayTeam = e.AwayTeam.Name,
+                AwayTeamCrestUrl = e.AwayTeam.CrestURL,
                 AwayTeamGoals = e.AwayTeamGoals,
                 AwayTeamId = e.AwayTeamId,
                 CompetitionId = e.CompetitionId,
                 GameId = e.GameId,
                 HomeTeam = e.HomeTeam.Name,
+                HomeTeamCrestUrl = e.HomeTeam.CrestURL,
                 HomeTeamGoals = e.HomeTeamGoals,
                 HalfAwayTeamGoals = e.HalfAwayTeamGoals,
                 HalfHomeTeamGoals = e.HalfHomeTeamGoals,

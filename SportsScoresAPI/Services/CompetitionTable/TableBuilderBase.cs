@@ -17,7 +17,7 @@ namespace SportsScoresAPI.Services.CompetitionTable
             var teamResult = tableRows.FirstOrDefault(r => r.TeamName == game.HomeTeam);
             if (teamResult == null)
             {
-                teamResult = new TableRowDTO { TeamName = game.HomeTeam };
+                teamResult = new TableRowDTO { TeamName = game.HomeTeam, CrestUrl = game.HomeTeamCrestUrl };
                 tableRows.Add(teamResult);
             }
             teamResult.GoalsLost += game.AwayTeamGoals.Value;
@@ -32,7 +32,7 @@ namespace SportsScoresAPI.Services.CompetitionTable
             var teamResult = tableRows.FirstOrDefault(r => r.TeamName == game.AwayTeam);
             if (teamResult == null)
             {
-                teamResult = new TableRowDTO { TeamName = game.AwayTeam };
+                teamResult = new TableRowDTO { TeamName = game.AwayTeam, CrestUrl = game.AwayTeamCrestUrl };
                 tableRows.Add(teamResult);
             }
             teamResult.GoalsLost += game.HomeTeamGoals.Value;
@@ -58,11 +58,11 @@ namespace SportsScoresAPI.Services.CompetitionTable
             {
                 if(!tableRows.Any(r => r.TeamName == game.HomeTeam))
                 {
-                    tableRows.Add(new TableRowDTO { TeamName = game.HomeTeam });
+                    tableRows.Add(new TableRowDTO { TeamName = game.HomeTeam, CrestUrl = game.HomeTeamCrestUrl });
                 }
                 if (!tableRows.Any(r => r.TeamName == game.AwayTeam))
                 {
-                    tableRows.Add(new TableRowDTO { TeamName = game.AwayTeam });
+                    tableRows.Add(new TableRowDTO { TeamName = game.AwayTeam, CrestUrl = game.AwayTeamCrestUrl });
                 }
             }
         }

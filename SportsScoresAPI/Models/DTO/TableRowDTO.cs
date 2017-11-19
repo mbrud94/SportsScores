@@ -30,6 +30,7 @@ namespace SportsScoresAPI.Models.DTO
         public int Draws { get; set; }
         public int GoalsScored { get; set; }
         public int GoalsLost { get; set; }
+        public string CrestUrl { get; set; }
 
     }
 }
