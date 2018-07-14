@@ -4,4 +4,5 @@ Rest API prepared using ASP .NET Core 2.0 that allow to obtain footbal scores an
 - ASP .NET Core 2.0
 - Entity Framework Core (Code First approach)
 - xUnit
-- RestSharp - to call external API
+- RestSharp - to call external API  
+- JWT Tokens admin authorization
